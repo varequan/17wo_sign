@@ -129,7 +129,8 @@ class sign17wo(object):
                 print "获得一次砸金蛋奖励"
                 self.signEgg()
             elif s['data']['continousSignDay'] == 7:
-                pass
+                print "获得一次签到抽幸运大奖"
+                self.signTurnAward()
             self.signShare()
         else:
             print s["message"]
@@ -148,6 +149,22 @@ class sign17wo(object):
             print s['data']['message']['prize']
         else:
             print s["message"]
+
+#http://17wo.cn/SignIn!getTurnAwardLuckDraw.action?_=1445661028727
+    def signTurnAward(self):
+        '''签到幸运大抽奖'''
+        plt = long('%.0f' % (time.time() * 1000))
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
+        req = urllib2.Request("http://17wo.cn/SignIn!getTurnAwardLuckDraw.action?_="+str(plt),headers=headers) 
+        response = urllib2.urlopen(req)
+        thePage = response.read()      
+        s = json.loads(thePage)
+        #print thePage
+        if(s['success']==True):
+            print s['data']['message']['prize']
+        else:
+            print s["message"]
+
 
     def signShare(self):
         '''完成签到分享'''
@@ -215,15 +232,15 @@ if __name__ == '__main__':
     ]
 
     for i in range(len(phones)):
-		sign = sign17wo()
-		phoneNumber = phones[i]["mobile"]
-		password = phones[i]["pw"]
-		domain = logindomain
-		sign.setLoginInfo(phoneNumber,password,domain)
-		sign.login()
-		sign.task(28)
-		sign.sign()
-		sign.redPacket()
-		sign.task(29)
-		print "==================================================="
+        sign = sign17wo()
+        phoneNumber = phones[i]["mobile"]
+        password = phones[i]["pw"]
+        domain = logindomain
+        sign.setLoginInfo(phoneNumber,password,domain)
+        sign.login()
+        sign.task(28)
+        sign.redPacket()
+        sign.sign()
+        sign.task(29)
+        print "==================================================="
 
