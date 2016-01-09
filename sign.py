@@ -83,13 +83,16 @@ class sign17wo(object):
         response = urllib2.urlopen(req)
         thePage = response.read()      
         s = json.loads(thePage)
-        #print thePage
-        if s['success'] == True:
-            print "得到"+s['data']['prize']
-            if s['data']['share']:
-                self.taskShare(taskid)
-        else:
-            print s['message']
+        try:
+	        #print thePage
+	        if s['success'] == True:
+	            print "得到"+s['data']['prize']
+	            if s['data']['share']:
+	                self.taskShare(taskid)
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
     def taskShare(self,taskid):
         '''完成任务分享'''
@@ -98,13 +101,16 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/UserCenterGrowup!share.action?sharecontent=hello&_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print thePage
-        if(s['success']==True):
-            print "分享成功（任务id："+ str(taskid) +"）"
-        else:
-            print s["message"]
+        thePage = response.read() 
+        try:     
+	        s = json.loads(thePage)
+	        #print thePage
+	        if(s['success']==True):
+	            print "分享成功（任务id："+ str(taskid) +"）"
+	        else:
+	            print s['message']
+        finally:
+	        pass
   
     def sign(self):
         '''每日签到'''
@@ -113,27 +119,29 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/SignIn!checkin.action?checkIn=true&_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print s['success']
+        thePage = response.read() 
         #print thePage
-        if(s['success']==True):
-            print s["message"]
-            print "本次签到获得"+str(s['data']['giftFlow'])+"M"
-            print "第"+str(s['data']['continousSignDay'])+"天签到，",
-            print "连续签到"+str(s['data']['count'])+"天，",
-            print "这个月签到"+str(s['data']['signMonthTotal'])+"天，",
-            print "一起沃流量账户："+str(s['data']['flowrateNum'])+"M"
+    	try:     
+	        s = json.loads(thePage)
+	        if(s['success']==True):
+	            print s['message']
+	            print "本次签到获得"+str(s['data']['giftFlow'])+"M"
+	            print "第"+str(s['data']['continousSignDay'])+"天签到，",
+	            print "连续签到"+str(s['data']['count'])+"天，",
+	            print "这个月签到"+str(s['data']['signMonthTotal'])+"天，",
+	            print "一起沃流量账户："+str(s['data']['flowrateNum'])+"M"
 
-            if s['data']['continousSignDay'] == 3:
-                print "获得一次砸金蛋奖励"
-                self.signEgg()
-            elif s['data']['continousSignDay'] == 7:
-                print "获得一次签到抽幸运大奖"
-                self.signTurnAward()
-            self.signShare()
-        else:
-            print s["message"]
+	            if s['data']['continousSignDay'] == 3:
+	                print "获得一次砸金蛋奖励"
+	                self.signEgg()
+	            elif s['data']['continousSignDay'] == 7:
+	                print "获得一次签到抽幸运大奖"
+	                self.signTurnAward()
+	            self.signShare()
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
 #http://17wo.cn/SignIn!playEggLuckDraw.action?_=1445401401627
     def signEgg(self):
@@ -142,13 +150,16 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/SignIn!playEggLuckDraw.action?_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print thePage
-        if(s['success']==True):
-            print s['data']['message']['prize']
-        else:
-            print s["message"]
+        thePage = response.read() 
+        #print thePage   
+        try:  
+	        s = json.loads(thePage)
+	        if(s['success']==True):
+	            print s['data']['message']['prize']
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
 #http://17wo.cn/SignIn!getTurnAwardLuckDraw.action?_=1445661028727
     def signTurnAward(self):
@@ -157,13 +168,16 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/SignIn!getTurnAwardLuckDraw.action?_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print thePage
-        if(s['success']==True):
-            print s['data']['message']['prize']
-        else:
-            print s["message"]
+        thePage = response.read()
+        #print thePage  
+        try:    
+	        s = json.loads(thePage)
+	        if(s['success']==True):
+	            print s['data']['message']['prize']
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
 
     def signShare(self):
@@ -173,13 +187,16 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/SignIn!share.action?sharecontent=abc&_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print thePage
-        if(s['success']==True):
-            print "分享成功（签到）"
-        else:
-            print s["message"]
+        thePage = response.read()
+        #print thePage  
+        try:    
+	        s = json.loads(thePage)
+	        if(s['success']==True):
+	            print "分享成功（签到）"
+	        else:
+	            print s['message']
+        finally:
+	        pass
         
     def redPacket(self):
         '''红包'''
@@ -187,18 +204,23 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/FlowRedPacket!LuckDraw.action?pageName=&_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        print "流量红包：",
-        #print thePage
-        if(s['success']==True):
-            if s['data']["message"]['awardType']<0:
-                print s['data']["message"]['errMsg']
-            else:
-                print s['data']["message"]['info']
-                self.redPacketShare()
-        else:
-            print s["message"]
+        thePage = response.read() 
+        #print thePage  
+        try:    
+	        s = json.loads(thePage)
+	        print "流量红包：",
+	        #
+	        if(s['success']==True):
+	        	if len(s['data']) > 1:
+		            if s['data']['message']['awardType']<0:
+		                print s['data']['message']['errMsg']
+		            else:
+		                print s['data']['message']['info']
+		                self.redPacketShare()
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
     def redPacketShare(self):
         '''红包分享'''
@@ -207,28 +229,23 @@ class sign17wo(object):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'}
         req = urllib2.Request("http://17wo.cn/FlowRedPacket!share.action?sendid=&sharecontent=undefined&subjectId=0&cpd=&_="+str(plt),headers=headers) 
         response = urllib2.urlopen(req)
-        thePage = response.read()      
-        s = json.loads(thePage)
-        #print thePage
-        if(s['success']==True):
-            print "分享成功（红包）"
-        else:
-            print s["message"]
+        thePage = response.read() 
+        try:     
+	        s = json.loads(thePage)
+	        #print thePage
+	        if(s['success']==True):
+	            print "分享成功（红包）"
+	        else:
+	            print s['message']
+        finally:
+	        pass
 
 if __name__ == '__main__':   
     phones=[
     	{
-    		"mobile":"130185*****",
+    		"mobile":"13018***070",
     		"pw":"******",
     	},
-    	{
-    		"mobile":"185662*****",
-    		"pw":"******",
-    	},
-    	{
-    		"mobile":"132723*****",
-    		"pw":"******",
-    	}
     ]
 
     for i in range(len(phones)):
